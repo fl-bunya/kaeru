@@ -1,0 +1,14 @@
+{
+  "name": "kaeru",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
