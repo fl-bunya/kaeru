@@ -26,11 +26,14 @@ struct TimeParams {
 
 fn get_current_time_params() -> TimeParams {
     let now = Utc::now();
-    let year = now.year().to_string();
-    let month = format!("{:02}", now.month());
-    let day = format!("{:02}", now.day());
-    let hour = format!("{:02}", now.hour());
-    let minute = format!("{:02}", now.minute());
+    let jst = chrono::FixedOffset::east_opt(9 * 3600).unwrap();
+    let jst_now = now.with_timezone(&jst);
+    
+    let year = jst_now.year().to_string();
+    let month = format!("{:02}", jst_now.month());
+    let day = format!("{:02}", jst_now.day());
+    let hour = format!("{:02}", jst_now.hour());
+    let minute = format!("{:02}", jst_now.minute());
 
     TimeParams {
         y: year,
