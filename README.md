@@ -74,7 +74,16 @@ cargo build --release
 ./target/release/kaeru
 ```
 
-### Deno - コンパイル版
+
+
+### Deno - バンドル版
+```sh
+cd deno
+deno bundle --minify --output dist/index.js src/index.ts
+deno run --allow-net dist/index.js
+```
+
+### Deno - コンパイル版バイナリ
 ```sh
 cd deno
 deno compile --allow-net --output dist/kaeru src/index.ts
@@ -111,6 +120,30 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 
 ### ビルド済みバイナリでの性能比較（10回測定の平均値）
 
+#### 計測コマンド
+```sh
+# Go
+for i in {1..10}; do /usr/bin/time -l ./go/kaeru 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Rust
+for i in {1..10}; do /usr/bin/time -l ./rust/target/release/kaeru 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Node.js
+for i in {1..10}; do /usr/bin/time -l node ./node/dist/index.js 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Bun
+for i in {1..10}; do /usr/bin/time -l bun ./bun/dist/index.js 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Bun (Compile)
+for i in {1..10}; do /usr/bin/time -l ./bun/dist/kaeru 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Deno
+for i in {1..10}; do /usr/bin/time -l deno run --allow-net ./deno/dist/index.js 2>&1 | grep -E "(real|maximum resident set size)"; done
+
+# Deno (Compile)
+for i in {1..10}; do /usr/bin/time -l ./deno/dist/kaeru 2>&1 | grep -E "(real|maximum resident set size)"; done
+```
+
 | 言語 | ファイルサイズ | 実行時間 | メモリ使用量 | 特徴 |
 |------|---------------|----------|-------------|------|
 | **Go** | 8.3MB | 0.55秒 | 11.8MB | 単一バイナリ、ランタイム不要、高速・軽量 |
@@ -118,7 +151,8 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 | **Node.js** | 279KB | 0.82秒 | 91.6MB | Viteビルド版、依存関係含む単一ファイル |
 | **Bun** | 326KB | 0.87秒 | 68.9MB | Bun向けビルド版、依存関係含む単一ファイル |
 | **Bun (Compile)** | 53MB | 0.91秒 | 69.8MB | コンパイル版バイナリ、Bunランタイム不要 |
-| **Deno** | 76.6MB | 1.12秒 | 80.3MB | コンパイル版、セキュリティ重視 |
+| **Deno** | 413KB | 1.38秒 | 73.8MB | バンドル版、依存関係含む単一ファイル |
+| **Deno (Compile)** | 76MB | 0.95秒 | 80.3MB | コンパイル版バイナリ、Denoランタイム不要 |
 
 ### 詳細比較
 
@@ -128,23 +162,26 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 - **Node.js**: 高速（0.82秒）、Viteによる最適化で効率的
 - **Bun**: 高速（0.87秒）、Bunネイティブの最適化
 - **Bun (Compile)**: 高速（0.91秒）、コンパイル版でも良好な性能
-- **Deno**: 最も遅い（1.12秒）、セキュリティ機能のオーバーヘッド
+- **Deno (Compile)**: 高速（0.95秒）、コンパイル版で効率的
+- **Deno**: 高速（1.38秒）、バンドル版で効率的
 
 #### メモリ使用量
 - **Rust**: 最小（10.1MB）、メモリ効率が最高
 - **Go**: 軽量（11.8MB）、バランスの取れた性能
 - **Bun**: 中程度（68.9MB）、TypeScriptランタイム中では効率的
 - **Bun (Compile)**: 中程度（69.8MB）、コンパイル版でも効率的
-- **Deno**: 中程度（80.3MB）、セキュリティ機能による増加
+- **Deno**: 中程度（73.8MB）、バンドル版で効率的
+- **Deno (Compile)**: 中程度（80.3MB）、セキュリティ機能による増加
 - **Node.js**: 最大（91.6MB）、Viteビルドでも標準的なNode.jsのメモリ使用量
 
 #### ファイルサイズ
 - **Node.js**: 小（279KB）、Viteによる効率的なbundle
 - **Bun**: 小（326KB）、Bun向け最適化されたbundle
+- **Deno**: 中（413KB）、バンドル版、依存関係含む単一ファイル
 - **Rust**: 中（4.4MB）、最適化済みバイナリ
 - **Go**: 大（8.3MB）、単一バイナリでランタイム含む
 - **Bun (Compile)**: 大（53MB）、Bunランタイムを含む単一バイナリ
-- **Deno**: 最大（76.6MB）、Denoランタイムを含む
+- **Deno (Compile)**: 最大（76MB）、Denoランタイムを含む
 
 ### 開発モードでの実行時間比較
 
@@ -165,6 +202,8 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 - **Bun**: Bun向けに最適化されたビルドにより、効率的な実行が可能
 - **Node.js**: Viteによるbundleとminifyにより、依存関係を含む単一ファイルで配布可能
 - **Bun (Compile)**: 単一の実行可能バイナリで、Bunランタイム不要。配布用に最適化されています
+- **Deno**: バンドル版、依存関係含む単一ファイルで配布可能
+- **Deno (Compile)**: 単一の実行可能バイナリで、Denoランタイム不要。配布用に最適化されています
 
 ---
 
@@ -186,4 +225,4 @@ kaeru/
 - Yahoo乗換案内のHTML構造が変わると、パース部分の修正が必要になる場合があります。
 - すべての実装で同じ機能を提供し、結果は一致します。
 - 性能測定はネットワーク状況により変動する可能性があります。
-- **測定日時**: 2025年1月23日
+- **測定日時**: 2025年7月23日

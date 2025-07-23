@@ -1,86 +1,72 @@
-# Kaeru Deno Version
+# Kaeru - Deno実装
 
-Yahoo乗換案内からルート情報を取得するDeno版のスクレイピングツールです。
-
-## 機能
-
-- Yahoo乗換案内からリアルタイムでルート情報を取得
-- Cheerioを使用したHTML解析
-- 発車時刻、到着時刻、ルート詳細の抽出
-- 現在時刻に基づくクエリ対応
+Yahoo乗換案内から「新富町(東京都) → 上福岡」のルート情報を取得するDeno実装です。
 
 ## セットアップ
 
-### 前提条件
-- Deno (v1.40以上推奨)
+```sh
+# 依存関係は自動的にダウンロードされます
+```
 
-### インストール
-Denoは自動的に依存関係を管理するため、特別なインストール手順は不要です。
+## 開発
 
-## 使用方法
-
-### 開発モード:
-```bash
+```sh
 deno run --allow-net src/index.ts
 ```
 
-### ビルド済みバイナリ:
-```bash
+## ビルド
+
+### コンパイル版バイナリ
+```sh
 deno compile --allow-net --output dist/kaeru src/index.ts
+```
+Denoランタイムを含む単一の実行可能バイナリを作成します。
+
+### バンドル版（外部依存関係）
+```sh
+deno bundle --minify --output dist/index.js --external cheerio src/index.ts
+```
+依存関係を除外してbundleとminifyを行います。
+
+### バンドル版（完全版）
+```sh
+deno bundle --minify --output dist/index-full.js src/index-esm-cheerio.ts
+```
+cheerioを含む完全なbundleとminifyを行います。
+
+## 実行
+
+### TypeScriptファイルの実行
+```sh
+deno run --allow-net src/index.ts
+```
+
+### コンパイル版バイナリの実行
+```sh
 ./dist/kaeru
 ```
 
-## プロジェクト構造
-
-```
-deno/
-├── src/
-│   └── index.ts          # メインTypeScriptソースファイル
-├── dist/                 # コンパイル済みバイナリ出力 (ビルド後に生成)
-├── deno.json            # Deno設定ファイル
-└── README.md            # このファイル
+### 外部依存関係版JavaScriptの実行
+```sh
+deno run --allow-net dist/index.js
 ```
 
-## スクリプト
-
-- `deno run --allow-net src/index.ts` - 開発モードで実行
-- `deno compile --allow-net --output dist/kaeru src/index.ts` - バイナリにコンパイル
-- `./dist/kaeru` - コンパイル済みバイナリを実行
-
-## 依存関係
-
-- `cheerio` - HTML解析と操作（npmパッケージとして自動インポート）
-
-## 出力例
-
-```
-🚇 Yahoo乗換案内からルート情報を取得中...
-Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
-
-📋 取得したルート情報 (3件):
-
-=== ルート 1 ===
-発車時刻: 14:30
-到着時刻: 15:45
-ルート: 新富町駅 → 渋谷駅 → 上福岡駅
-
-=== ルート 2 ===
-発車時刻: 14:35
-到着時刻: 15:50
-ルート: 新富町駅 → 新宿駅 → 上福岡駅
+### 完全版JavaScriptの実行
+```sh
+deno run --allow-net dist/index-full.js
 ```
 
-## Denoの特徴
+## ファイルサイズ比較
 
-- **依存関係管理**: `deno.json`で一元管理、自動ダウンロード
-- **セキュリティ**: 明示的な権限が必要（`--allow-net`）
-- **単一バイナリ**: `deno compile`でランタイム不要のバイナリ生成
-- **TypeScript**: 標準でTypeScriptサポート
-- **標準ライブラリ**: 豊富な標準ライブラリを提供
+- **TypeScriptソース**: 4.5KB
+- **バンドル版（外部依存関係）**: 2.2KB
+- **バンドル版（完全版）**: 413KB
+- **コンパイル版バイナリ**: 76MB
 
 ## 注意事項
 
-- Yahoo乗換案内のHTML構造が変更された場合、セレクタの調整が必要になる可能性があります
-- 過度なリクエストは避けてください
-- 取得したデータの使用は、Yahoo乗換案内の利用規約に従ってください
-- ネットワークアクセスには`--allow-net`権限が必要です 
+- Denoはセキュリティ重視の設計のため、ネットワークアクセスに明示的な許可が必要です
+- **外部依存関係版**: cheerioを外部依存関係として除外しているため、実行時にcheerioが必要です
+- **完全版**: cheerioを含むため、単体で動作しますが、ファイルサイズが大きくなります
+- コンパイル版バイナリはDenoランタイムを含むため、ファイルサイズが大きくなります
+- すべてのバージョンで同じ機能を提供し、結果は一致します 

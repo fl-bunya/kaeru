@@ -5,7 +5,11 @@
   "exports": "./src/index.ts",
   "scripts": {
     "start": "deno run --allow-net src/index.ts",
-    "build": "deno compile --allow-net --output dist/kaeru src/index.ts"
+    "build": "deno compile --allow-net --output dist/kaeru src/index.ts",
+    "bundle": "deno bundle --minify --output dist/index.js --external cheerio src/index.ts",
+    "bundle:dev": "deno bundle --output dist/index.js --external cheerio src/index.ts",
+    "bundle:full": "deno bundle --minify --output dist/index-full.js src/index-esm-cheerio.ts",
+    "bundle:full:dev": "deno bundle --output dist/index-full.js src/index-esm-cheerio.ts"
   },
   "imports": {
     "cheerio": "npm:cheerio@^1.0.0-rc.12"
