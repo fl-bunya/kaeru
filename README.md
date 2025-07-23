@@ -183,15 +183,15 @@ for i in {1..10}; do /usr/bin/time -l ./deno/dist/kaeru 2>&1 | grep -E "(real|ma
 - **Bun (Compile)**: 大（53MB）、Bunランタイムを含む単一バイナリ
 - **Deno (Compile)**: 最大（76MB）、Denoランタイムを含む
 
-### 開発モードでの実行時間比較
+### 開発モードでの実行時間比較（5回測定の平均値）
 
 | 言語 | 実行方法 | 実行時間 | 特徴 |
 |------|----------|----------|------|
-| **TypeScript (Bun)** | `bun run index.ts` | ~2秒 | 軽量、開発しやすい、依存関係管理が簡単 |
-| **TypeScript (Node.js)** | `npm run dev` | ~3秒 | 標準的なNode.js環境、TypeScriptコンパイルが必要 |
-| **Go** | `go run main.go` | ~1秒 | 高速、ランタイム不要、シンプルな実行 |
-| **Rust** | `cargo run` | ~4秒 | 最速実行、メモリ安全、コンパイル時間が長い |
-| **Deno** | `deno run src/index.ts` | ~2秒 | セキュリティ重視、依存関係管理が簡単 |
+| **Go** | `cd go && go run main.go` | 0.72秒 | 高速、ランタイム不要、シンプルな実行 |
+| **TypeScript (Bun)** | `bun run index.ts` | 0.85秒 | 軽量、開発しやすい、依存関係管理が簡単 |
+| **Rust** | `cargo run` | 1.11秒 | 高速実行、メモリ安全、初回はコンパイル時間含む |
+| **Deno** | `deno run src/index.ts` | 1.19秒 | セキュリティ重視、依存関係管理が簡単 |
+| **TypeScript (Node.js)** | `npm run dev` | 1.75秒 | 標準的なNode.js環境、TypeScriptコンパイルが必要 |
 
 ### 注意事項
 - **TypeScript (Bun/Node.js)**: 実行にはNode.js/bunランタイムが必要
