@@ -1,15 +1,41 @@
-# kaeru
+# Kaeru - Bun実装
 
-To install dependencies:
+Yahoo乗換案内から「新富町(東京都) → 上福岡」のルート情報を取得するBun実装です。
 
-```bash
+## セットアップ
+
+```sh
 bun install
 ```
 
-To run:
+## 開発
 
-```bash
-bun run index.ts
+```sh
+bun run dev
 ```
 
-This project was created using `bun init` in bun v1.1.25. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## ビルド
+
+### 本番用ビルド（minify済み）
+```sh
+bun run build
+```
+Bun向けにトランスパイルし、minifyして出力します。
+
+### 開発用ビルド（minifyなし）
+```sh
+bun run build:dev
+```
+Bun向けにトランスパイルして出力します（デバッグ用）。
+
+## 実行
+
+```sh
+bun run start
+```
+
+## ファイルサイズ比較
+
+- **開発用ビルド**: 519KB
+- **本番用ビルド（minify）**: 326KB
+

@@ -2,6 +2,12 @@
   "name": "kaeru",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run index.ts",
+    "build": "bun build index.ts --outdir dist --minify",
+    "build:dev": "bun build index.ts --outdir dist",
+    "start": "bun dist/index.js"
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12"
   },
