@@ -46,6 +46,13 @@ bun run build
 bun dist/index.js
 ```
 
+### TypeScript (Bun) - コンパイル版バイナリ
+```sh
+cd bun
+bun run compile
+./dist/kaeru
+```
+
 ### TypeScript (Node.js) - Viteビルド版
 ```sh
 cd node
@@ -110,6 +117,7 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 | **Rust** | 4.4MB | 0.58秒 | 10.1MB | 最適化済みバイナリ、メモリ安全、最高性能 |
 | **Node.js** | 279KB | 0.82秒 | 91.6MB | Viteビルド版、依存関係含む単一ファイル |
 | **Bun** | 326KB | 0.87秒 | 68.9MB | Bun向けビルド版、依存関係含む単一ファイル |
+| **Bun (Compile)** | 53MB | 0.91秒 | 69.8MB | コンパイル版バイナリ、Bunランタイム不要 |
 | **Deno** | 76.6MB | 1.12秒 | 80.3MB | コンパイル版、セキュリティ重視 |
 
 ### 詳細比較
@@ -119,12 +127,14 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 - **Rust**: ほぼ同等の高速性（0.58秒）、最小メモリ使用量
 - **Node.js**: 高速（0.82秒）、Viteによる最適化で効率的
 - **Bun**: 高速（0.87秒）、Bunネイティブの最適化
+- **Bun (Compile)**: 高速（0.91秒）、コンパイル版でも良好な性能
 - **Deno**: 最も遅い（1.12秒）、セキュリティ機能のオーバーヘッド
 
 #### メモリ使用量
 - **Rust**: 最小（10.1MB）、メモリ効率が最高
 - **Go**: 軽量（11.8MB）、バランスの取れた性能
 - **Bun**: 中程度（68.9MB）、TypeScriptランタイム中では効率的
+- **Bun (Compile)**: 中程度（69.8MB）、コンパイル版でも効率的
 - **Deno**: 中程度（80.3MB）、セキュリティ機能による増加
 - **Node.js**: 最大（91.6MB）、Viteビルドでも標準的なNode.jsのメモリ使用量
 
@@ -133,6 +143,7 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 - **Bun**: 小（326KB）、Bun向け最適化されたbundle
 - **Rust**: 中（4.4MB）、最適化済みバイナリ
 - **Go**: 大（8.3MB）、単一バイナリでランタイム含む
+- **Bun (Compile)**: 大（53MB）、Bunランタイムを含む単一バイナリ
 - **Deno**: 最大（76.6MB）、Denoランタイムを含む
 
 ### 開発モードでの実行時間比較
@@ -153,6 +164,7 @@ Fetching transit routes from: https://transit.yahoo.co.jp/search/result?...
 - ビルド済みバイナリは配布用に最適化されており、実行速度が向上します
 - **Bun**: Bun向けに最適化されたビルドにより、効率的な実行が可能
 - **Node.js**: Viteによるbundleとminifyにより、依存関係を含む単一ファイルで配布可能
+- **Bun (Compile)**: 単一の実行可能バイナリで、Bunランタイム不要。配布用に最適化されています
 
 ---
 
@@ -174,3 +186,4 @@ kaeru/
 - Yahoo乗換案内のHTML構造が変わると、パース部分の修正が必要になる場合があります。
 - すべての実装で同じ機能を提供し、結果は一致します。
 - 性能測定はネットワーク状況により変動する可能性があります。
+- **測定日時**: 2025年1月23日

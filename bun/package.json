@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "bun run index.ts",
-    "build": "bun build index.ts --outdir dist --minify",
-    "build:dev": "bun build index.ts --outdir dist",
-    "start": "bun dist/index.js"
+    "build": "bun build index.ts --outdir dist --target node --minify",
+    "build:dev": "bun build index.ts --outdir dist --target node",
+    "compile": "bun build index.ts --minify --compile && mv index dist/kaeru",
+    "start": "bun dist/index.js",
+    "start:binary": "./dist/kaeru"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12"
