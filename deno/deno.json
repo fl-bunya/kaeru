@@ -1,0 +1,35 @@
+{
+  "name": "kaeru-deno",
+  "version": "1.0.0",
+  "description": "Deno version of the transit route fetcher",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "start": "deno run --allow-net src/index.ts",
+    "build": "deno compile --allow-net --output dist/kaeru src/index.ts"
+  },
+  "imports": {
+    "cheerio": "npm:cheerio@^1.0.0-rc.12"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": ["src/"]
+    },
+    "options": {
+      "useTabs": false,
+      "lineWidth": 80,
+      "indentWidth": 2,
+      "semiColons": true,
+      "singleQuote": true,
+      "proseWrap": "preserve"
+    }
+  }
+} 
