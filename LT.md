@@ -74,10 +74,10 @@ JSのファイルサイズは、ランタイムの事も考慮しなければな
 ### 感想
 GoかBunが個人的には良いと感じた。
 
-- **Rust**: 実行ファイルサイズ、メモリ使用量が少ない。ほぼ最速。開発モードの実行はそんなに早くない（コンパイル遅い）。コンパイルエラー解消が辛い。
-- **Go**: 実行結果が最速。コンパイルも速い。フォルダ構成がシンプル。言語仕様も比較的シンプル。
-- **Node.js**: Viteのおかげか、bundleファイルはJSの中では小さい。開発モードの実行が一番遅い。メモリ使用量がJSでは一番多い。（V8）
-- **Bun**: 開発モードの実行がJSでは一番早い。メモリ使用量がJSでは一番少ない。（JavaScriptCore）
+- **Rust**: 最速。実行ファイルサイズ、メモリ使用量が少ない。開発モードの実行はそんなに早くない（コンパイル遅い）。コンパイルエラー解消が辛い。
+- **Go**: ほぼ最速。コンパイルも速い。フォルダ構成がシンプル。言語仕様も比較的シンプル。
+- **Node.js**: Viteのおかげか、bundleファイルはJSの中では小さい。開発モードの実行が一番遅い。メモリ使用量がJSでは一番多い。（V8のせいか）
+- **Bun**: 本番、開発モードともに、JSでは一番速い。メモリ使用量がJSでは一番少ない。（JavaScriptCoreのおかげか）
 - **Deno**: セキュリティが厳しい、オーバーヘッドで色々遅め？
 
 ## 日常使いする
@@ -87,7 +87,11 @@ https://www.npmjs.com/package/rakumacchisay
 
 ```sh
 # .zprofile
-alias kaeru='/Users/bunya/my/kaeru/go/kaeru'
+alias kaerunode='node /Users/bunya/my/kaeru/node/dist/index.js'
+alias kaerubun='bun /Users/bunya/my/kaeru/bun/dist/index.js'
+alias kaerurust='/Users/bunya/my/kaeru/rust/target/release/kaeru'
+alias kaerugo='/Users/bunya/my/kaeru/go/kaeru'
+alias kaeru='kaerurust'
 alias kaerucchi='kaeru | grep 発車時刻 | head -n 1 | xargs -I {} npx rakumacchisay "{}"'
 ```
 
